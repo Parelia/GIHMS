@@ -41,11 +41,11 @@ public:
   ~MainWindow();
 
 private:
-  void loadData();
-  void saveData();
+  void loadSessionName();
+  void saveSessionName();
   void openSetup();
   void openCamerasView();
-  void buttonsAfterSetup();
+  void guiAfterSetup();
   void clearStatusBar();
 
   void writeYamlPos(sensor_msgs::JointState*, QString);
@@ -118,13 +118,11 @@ private:
   std::vector<ros::Subscriber> singleSub;
 
   QString currentSessionPath;
+  int currentImageNumber;
 
   SetupDialog *sd;
   int cameraNumber;
-  int numberOfPoses;
-  QString robotTopic; // da cancellare
-  QString robotStartingPose; // da cancellare
-  QString kineticPath; // da cancellare
+  QString trajectoryPath;
 
   sensor_msgs::JointState* robotJoints;
   std::vector<sensor_msgs::JointState*> vectorOfTrajectory;

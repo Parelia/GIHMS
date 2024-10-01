@@ -33,7 +33,7 @@
      <item row="0" column="1">
       <widget class="QSpinBox" name="cameraNumberSpinBox">
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="accelerated">
         <bool>true</bool>
@@ -80,7 +80,7 @@
      <item row="0" column="1">
       <widget class="QSpinBox" name="patternRowsSpinBox">
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="minimum">
         <number>1</number>
@@ -100,7 +100,7 @@
      <item row="1" column="1">
       <widget class="QSpinBox" name="patternColumnsSpinBox">
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="minimum">
         <number>1</number>
@@ -120,7 +120,7 @@
      <item row="2" column="1">
       <widget class="QDoubleSpinBox" name="patternSizeSpinBox">
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="minimum">
         <double>0.010000000000000</double>
@@ -201,10 +201,10 @@
       </layout>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="knComboBox"/>
+      <widget class="QComboBox" name="trajComboBox"/>
      </item>
      <item row="0" column="0">
-      <widget class="QLabel" name="knLabel">
+      <widget class="QLabel" name="trajLabel">
        <property name="text">
         <string>Robot trajectory</string>
        </property>

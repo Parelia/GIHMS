@@ -6,13 +6,15 @@ MainWindow::MainWindow(QWidget *parent) :
   ui(new Ui::MainWindow),
   cv(nullptr),
   cameraNumber(0),
-  numberOfPoses(0),
   robotJoints(new sensor_msgs::JointState)
 {
   ui->setupUi(this);
 
   this->setGeometry(QRect(200,200, 800, 600));
-  loadData();
+  loadSessionName();
+
+  // if() // old session
+  //   guiAfterSetup();
 
   nh_.reset(new ros::NodeHandle("~"));
 
@@ -23,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-  saveData();
+  saveSessionName();
 
   delete ui;
   delete timer;
@@ -55,8 +57,6 @@ void MainWindow::setIntData(int data, std::string type)
 {
   if(type == "cameraNumber")
     this->cameraNumber = data;
-  else if(type == "numberOfPoses")
-    this->numberOfPoses = data;
 }
 
 /*
@@ -64,20 +64,16 @@ void MainWindow::setIntData(int data, std::string type)
 */
 void MainWindow::setStringData(QString data, std::string type)
 {
-  if(type == "robotTopic")
-    this->robotTopic = data;
-  else if(type == "robotStartingPose")
-    this->robotStartingPose = data;
-  else if(type == "kineticPath")
-    this->kineticPath = data;
+  if(type == "trajectoryPath")
+    this->trajectoryPath = data;
 }
 
 /*
  * To read the Qt stored style data
 */
-void MainWindow::loadData() // NOT SLOT
+void MainWindow::loadSessionName() // NOT SLOT
 {
-  QSettings settings("UniPd", "GUI");
+  QSettings settings("UniPd", "GIHMs");
 
   // Load lastSessionNameLabel
   currentSessionPath = settings.value("lastSessionNameLabel").toString();
@@ -91,9 +87,9 @@ void MainWindow::loadData() // NOT SLOT
 /*
  * To store data in Qt style
 */
-void MainWindow::saveData() // NOT SLOT
+void MainWindow::saveSessionName() // NOT SLOT
 {
-  QSettings settings("UniPd", "GUI");
+  QSettings settings("UniPd", "GIHMs");
 
   // Remove old keys
   settings.remove("lastSessionNameLabel");
@@ -105,15 +101,35 @@ void MainWindow::saveData() // NOT SLOT
 /*
  * Update all the buttons after completing sError: package 'franka_description' not foundetup
 */
-void MainWindow::buttonsAfterSetup() // NOT SLOT
+void MainWindow::guiAfterSetup() // NOT SLOT
 {
-  ui->setupButton->setDisabled(false);
   ui->camerasButton->setDisabled(false);
   ui->actionOpenCameraView->setDisabled(false);
-  ui->autoStartButton->setDisabled(false);
-  ui->autoStopButton->setDisabled(true);
+
+  ui->setupButton->setDisabled(false);
+  ui->actionOpenSetup->setDisabled(false);
+
+  ui->actionExitApp->setDisabled(false);
+  ui->actionCloseCurrentSession->setDisabled(false);
+  ui->actionOpenSession->setDisabled(false);
+  ui->actionNewSession->setDisabled(false);
+  ui->actionUserGuide->setDisabled(false);
+
   ui->takeSamplesButton->setDisabled(false);
   ui->lastPoseButton->setDisabled(false);
+  ui->nextPoseButton->setDisabled(false);
+  ui->moveToPoseButton->setDisabled(false);
+  ui->moveToPoseSpinBox->setDisabled(false);
+
+  ui->autoStartButton->setDisabled(false);
+  ui->autoStopButton->setDisabled(false);
+  ui->startPoseSpinBox->setDisabled(false);
+  ui->stopPoseSpinBox->setDisabled(false);
+
+  //if() { // there are some images
+  //  ui->startScriptButton->setDisabled(false);
+  //  ui->clearImagesButton->setDisabled(false);
+  //}
 }
 
 /*
@@ -310,7 +326,7 @@ void MainWindow::openSetup() // NOT SLOT
   ROS_INFO("Setup saved");
   statusBar()->showMessage(tr("Setup Saved"), 1000);
 
-  if (cameraNumber != 0 && numberOfPoses != 0) { // setup = ok
+  if (cameraNumber != 0) { // setup = ok
     // clear previus
     for (ros::Subscriber sub : singleSub) { sub.shutdown(); }
     singleSub.erase(singleSub.begin(), singleSub.end());
@@ -320,9 +336,13 @@ void MainWindow::openSetup() // NOT SLOT
     ui->setupStatusLabel->setText("Completed");
 
     for(int i=0; i<cameraNumber; i++) singleSub.emplace_back(ros::Subscriber());
-    vectorOfTrajectory.reserve(numberOfPoses);
 
-    buttonsAfterSetup();
+    QDirIterator it(trajectoryPath, QStringList() << "*.yaml", QDir::Files, QDirIterator::Subdirectories);
+    int i=0;
+    while(it.hasNext()) i++;
+    vectorOfTrajectory.reserve(i);
+
+    guiAfterSetup();
 
     QDir dir;
     for(int i=1; i<=cameraNumber; i++)
@@ -384,7 +404,8 @@ void MainWindow::moveRobot() {
   static const std::string PLANNING_GROUP = "panda_arm";
   moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
 
-  for(int i=0; i<numberOfPoses; i++) {
+  int maxP = ui->stopPoseSpinBox->value();
+  for(int i=0; i<maxP; i++) {
     QString s = "home/iaslab/parelia_ws/src/first_gui_pkg/rc/dataset_sphere_tilt/start_pos/" + QString::fromStdString(addFrontZeros(i, 1000)) + ".yaml";
     std::vector<double> target_joint_positions = readYamlVectorOfPos(s);
 
@@ -421,12 +442,26 @@ void MainWindow::on_autoStartButton_clicked() // Not completed - Wait robot - Pa
   ROS_INFO("Starting autonomous sampling routine");
   // Disable all ui
   ui->setupButton->setDisabled(true);
-  ui->actionOpenSetup->setDisabled(true); // -- divider
-  ui->autoStartButton->setDisabled(true); // --
+  ui->actionOpenSetup->setDisabled(true);
+
+  ui->actionExitApp->setDisabled(true);
+  ui->actionCloseCurrentSession->setDisabled(true);
+  ui->actionOpenSession->setDisabled(true);
+  ui->actionNewSession->setDisabled(true);
+  ui->actionUserGuide->setDisabled(true);
+
   ui->takeSamplesButton->setDisabled(true);
-  ui->nextPoseButton->setDisabled(true);
   ui->lastPoseButton->setDisabled(true);
-  ui->startCaliButton->setDisabled(true); // --
+  ui->nextPoseButton->setDisabled(true);
+  ui->moveToPoseButton->setDisabled(true);
+  ui->moveToPoseSpinBox->setDisabled(true);
+
+  ui->autoStartButton->setDisabled(true);
+  ui->startPoseSpinBox->setDisabled(true);
+  ui->stopPoseSpinBox->setDisabled(true);
+
+  ui->startScriptButton->setDisabled(true);
+  ui->clearImagesButton->setDisabled(true);
   // Except for
   ui->autoStopButton->setDisabled(false);
   ui->camerasButton->setDisabled(false);
@@ -488,7 +523,7 @@ void MainWindow::on_autoStopButton_clicked()  // With delete images function
 
   statusBar()->showMessage(tr("Sampling interrupted"), 2000);
 
-  buttonsAfterSetup();
+  guiAfterSetup();
   ui->autoStopButton->setDisabled(true);
 
   // Delete or not the images
@@ -747,7 +782,7 @@ void MainWindow::on_actionCloseCurrentSession_triggered()
   if(ui->stackedWidget->currentIndex() != 0) {
     ROS_INFO("Session closed");
     ui->openLastSessionPushButton->setDisabled(false);
-    saveData();
+    saveSessionName();
   }
   ui->stackedWidget->setCurrentIndex(0);
 }

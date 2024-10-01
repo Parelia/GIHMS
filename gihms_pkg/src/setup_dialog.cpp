@@ -38,7 +38,7 @@ void SetupDialog::loadData()
   for (int i = 0; i < count; ++i) {
     QString name = settings.value(QString::number(i)).toString();
     QVariant item = settings.value(name);
-    ui->knComboBox->addItem(name, item);
+    ui->trajComboBox->addItem(name, item);
   }
   settings.endGroup();
 }
@@ -76,11 +76,11 @@ void SetupDialog::saveData()
 
   // Save knComboBox
   settings.beginGroup("knComboBox");
-  int count = ui->knComboBox->count();
+  int count = ui->trajComboBox->count();
   settings.setValue("count", count);
   for (int i = 0; i < count; ++i) {
-    settings.setValue(QString::number(i), ui->knComboBox->itemText(i));
-    settings.setValue(ui->knComboBox->itemText(i), ui->knComboBox->itemData(i));
+    settings.setValue(QString::number(i), ui->trajComboBox->itemText(i));
+    settings.setValue(ui->trajComboBox->itemText(i), ui->trajComboBox->itemData(i));
   }
   settings.endGroup();
 }
@@ -145,8 +145,8 @@ void SetupDialog::on_buttonBox_accepted() // Adapted for simulation
   // Update cameraNumber
   emit sendIntData(ui->cameraNumberSpinBox->value(), "cameraNumber");
 
-  // Update kineticPath
-  emit sendStringData(ui->knComboBox->currentData().toString(), "kineticPath");
+  // Update trajectoryPath
+  emit sendStringData(ui->trajComboBox->currentData().toString(), "trajectoryPath");
 
   // Set environment
   writeYamlInfo(sessionPath + "/CalibrationInfo.yaml");
@@ -164,10 +164,10 @@ void SetupDialog::on_addKnButton_clicked()
     while(ok) {
       name = QInputDialog::getText(nullptr, tr("Save New Kinematic Preset"), s, QLineEdit::Normal, "", &ok);
       if(name.isEmpty());
-      else if(ui->knComboBox->findText(name, Qt::MatchFixedString) != -1)
+      else if(ui->trajComboBox->findText(name, Qt::MatchFixedString) != -1)
         QMessageBox::warning(nullptr, tr("Bad Name"), tr("Selected name already assigned"));
       else {
-        ui->knComboBox->addItem(name, dir);
+        ui->trajComboBox->addItem(name, dir);
         ok = false;
       }
     }
@@ -180,11 +180,11 @@ void SetupDialog::on_addKnButton_clicked()
 */
 void SetupDialog::on_rmKnButton_clicked()
 {
-  if(ui->knComboBox->currentIndex() < 1) QMessageBox::warning(nullptr, tr("Bad Index"), tr("Default value can't be removed"));
+  if(ui->trajComboBox->currentIndex() < 1) QMessageBox::warning(nullptr, tr("Bad Index"), tr("Default value can't be removed"));
   else {
     if(QMessageBox::question(nullptr, tr("Removing kinematic"), tr("Are you sure?")) == QMessageBox::Yes) {
-      ui->knComboBox->removeItem(ui->knComboBox->currentIndex());
-      ui->knComboBox->setCurrentIndex(0);
+      ui->trajComboBox->removeItem(ui->trajComboBox->currentIndex());
+      ui->trajComboBox->setCurrentIndex(0);
     }
   }
 }

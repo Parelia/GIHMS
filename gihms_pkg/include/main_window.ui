@@ -215,7 +215,7 @@
             <item>
              <widget class="QPushButton" name="camerasButton">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens cameras widget&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -313,7 +313,7 @@
             <item>
              <widget class="QPushButton" name="takeSamplesButton">
               <property name="enabled">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
               <property name="text">
                <string>Take Samples</string>
@@ -325,7 +325,7 @@
               <item>
                <widget class="QPushButton" name="lastPoseButton">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="text">
                  <string>Last Pose</string>
@@ -335,7 +335,7 @@
               <item>
                <widget class="QPushButton" name="nextPoseButton">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="text">
                  <string>Next Pose</string>
@@ -349,7 +349,7 @@
               <item>
                <widget class="QPushButton" name="moveToPoseButton">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="text">
                  <string>Move to Pose:</string>
@@ -359,7 +359,7 @@
               <item>
                <widget class="QSpinBox" name="moveToPoseSpinBox">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -398,7 +398,7 @@
               <item>
                <widget class="QSpinBox" name="startPoseSpinBox">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -419,7 +419,7 @@
               <item>
                <widget class="QSpinBox" name="stopPoseSpinBox">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -433,7 +433,7 @@
               <item>
                <widget class="QPushButton" name="autoStartButton">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="text">
                  <string>Start</string>
@@ -443,7 +443,7 @@
               <item>
                <widget class="QPushButton" name="autoStopButton">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
                 <property name="text">
                  <string>Stop</string>
@@ -478,7 +478,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="startCaliButton">
+         <widget class="QPushButton" name="startScriptButton">
           <property name="enabled">
            <bool>false</bool>
           </property>
