@@ -1,0 +1,93 @@
+!!python/object/new:moveit_msgs.msg._RobotTrajectory.RobotTrajectory
+state:
+- !!python/object/new:trajectory_msgs.msg._JointTrajectory.JointTrajectory
+  state:
+  - !!python/object/new:std_msgs.msg._Header.Header
+    state:
+    - 0
+    - !!python/object/new:genpy.rostime.Time
+      state:
+      - 0
+      - 0
+    - world
+  - - panda_joint1
+    - panda_joint2
+    - panda_joint3
+    - panda_joint4
+    - panda_joint5
+    - panda_joint6
+    - panda_joint7
+  - - !!python/object/new:trajectory_msgs.msg._JointTrajectoryPoint.JointTrajectoryPoint
+      state:
+      - !!python/tuple
+        - -1.7217320397782343
+        - 0.8662719784443338
+        - -1.2884392244932776
+        - -2.189411551817667
+        - -2.0771588556427947
+        - 0.9904175686531493
+        - -2.631229583889099
+      - !!python/tuple
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+      - !!python/tuple
+        - -0.43410273207327554
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+      - !!python/tuple []
+      - !!python/object/new:genpy.rostime.Duration
+        state:
+        - 0
+        - 0
+    - !!python/object/new:trajectory_msgs.msg._JointTrajectoryPoint.JointTrajectoryPoint
+      state:
+      - !!python/tuple
+        - -1.7224256365893633
+        - 0.8659455647364261
+        - -1.2877922172312373
+        - -2.1884951935129937
+        - -2.075661364204319
+        - 0.9893362968182021
+        - -2.6303138214038735
+      - !!python/tuple
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+      - !!python/tuple
+        - 0.43410273207327554
+        - 0.20429315722808386
+        - -0.40494364393888294
+        - -0.5735228842375251
+        - -0.9372377644593207
+        - 0.6767376235487925
+        - -0.5731499776066742
+      - !!python/tuple []
+      - !!python/object/new:genpy.rostime.Duration
+        state:
+        - 0
+        - 56529127
+- !!python/object/new:trajectory_msgs.msg._MultiDOFJointTrajectory.MultiDOFJointTrajectory
+  state:
+  - !!python/object/new:std_msgs.msg._Header.Header
+    state:
+    - 0
+    - !!python/object/new:genpy.rostime.Time
+      state:
+      - 0
+      - 0
+    - ''
+  - []
+  - []

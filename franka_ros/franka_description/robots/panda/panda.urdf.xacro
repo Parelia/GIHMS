@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+
+  <xacro:arg name="hand_addon"  default="none" />  <!-- Should an add-on be mounted on the hand? [None, camera, checkerboard]" -->
+  <xacro:arg name="pattern"     default="pattern_square_5x4_5cm" />  <!-- Specify the pattern for the checkerboard -->
+  <xacro:arg name="arm_id" default="" />
+  
+  <!-- Table -->
+  <xacro:property name="tableLength" value="1.40"/>
+  <xacro:property name="tableWidth" value="0.60"/>
+  <xacro:property name="tableHeight" value="0.70"/> 
+
+  <xacro:include filename="$(find rvlab_simulation)/urdf/assets/table_with_trays.xacro" />
+  
+  <xacro:include filename="$(find franka_description)/robots/common/franka_robot.xacro"/>
+  
+  <!-- Davide -->
+  <xacro:include filename="$(find rvlab_simulation)/urdf/assets/calibration_pattern_mount.urdf.xacro" />
+  
+  <xacro:property name="arm_id"   value="$(arg arm_id)"     />
+  <xacro:property name="addon"    value="$(arg hand_addon)" />
+  <xacro:property name="pattern"  value="$(arg pattern)"    />
+
+  
+  <!-- Table -->
+  <!--xacro:create_table prefix="" parent="world"
+    l="${tableLength}" w="${tableWidth}" h="${tableHeight}">
+    <origin xyz="0 0 ${tableHeight/2}" rpy="0 0 0"/>
+  </xacro:create_table-->
+
+  <xacro:franka_robot arm_id="$(arg arm_id)" 
+                      joint_limits="${xacro.load_yaml('$(find franka_description)/robots/panda/joint_limits.yaml')}">
+  </xacro:franka_robot>
+  
+  <xacro:if value="${addon == 'checkerboard'}">
+    <!-- ADD CHECKERBOARD TO THE ROBOT -->
+    <xacro:calibration_pattern_mount name="checkerboard_mount" pattern_name="${pattern}" prefix="" parent="${arm_id}_link8">
+      <origin xyz="0.014284 -0.014284 0.02377" rpy="${pi} ${-pi/2} ${-pi/4}" />
+    </xacro:calibration_pattern_mount>
+  </xacro:if>
+  
+</robot>

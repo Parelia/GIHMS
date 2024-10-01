@@ -1,0 +1,49 @@
+!!python/object/new:moveit_msgs.msg._RobotState.RobotState
+state:
+- !!python/object/new:sensor_msgs.msg._JointState.JointState
+  state:
+  - !!python/object/new:std_msgs.msg._Header.Header
+    state:
+    - 0
+    - !!python/object/new:genpy.rostime.Time
+      state:
+      - 0
+      - 0
+    - world
+  - - panda_joint1
+    - panda_joint2
+    - panda_joint3
+    - panda_joint4
+    - panda_joint5
+    - panda_joint6
+    - panda_joint7
+    - panda_finger_joint1
+    - panda_finger_joint2
+  - !!python/tuple
+    - -0.9407810976479887
+    - -1.023944500402603
+    - -1.7723356342116467
+    - -2.17529276171625
+    - 1.947251288938462
+    - 1.120329318404659
+    - 2.0503534091570135
+    - 0.003521857381419653
+    - 0.003357316023998864
+  - !!python/tuple []
+  - !!python/tuple []
+- !!python/object/new:sensor_msgs.msg._MultiDOFJointState.MultiDOFJointState
+  state:
+  - !!python/object/new:std_msgs.msg._Header.Header
+    state:
+    - 0
+    - !!python/object/new:genpy.rostime.Time
+      state:
+      - 0
+      - 0
+    - world
+  - []
+  - []
+  - []
+  - []
+- []
+- false
